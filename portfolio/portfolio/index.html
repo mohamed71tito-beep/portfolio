@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohamed Atito — Data Analyst | Business Intelligence &amp; Analytics</title>
+<meta name="description" content="Mohamed Atito is a Data Analyst and Accounting student in Egypt, building SQL-driven analysis and Power BI / Tableau dashboards that turn raw data into decisions.">
+<meta property="og:title" content="Mohamed Atito — Data Analyst | Business Intelligence">
+<meta property="og:description" content="SQL, Power BI, Tableau &amp; Python — dashboards and analysis that turn raw data into decisions.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#060a12;
+  --bg-panel:#0d1420;
+  --bg-panel-2:#121c2c;
+  --line:#1c2a3d;
+  --line-soft:#14202f;
+  --text:#eef2f7;
+  --text-dim:#8798ad;
+  --text-faint:#546479;
+  --accent:#35c5f0;
+  --accent-2:#5b7fff;
+  --accent-mint:#34d6a0;
+  --grad: linear-gradient(120deg,var(--accent),var(--accent-2));
+  --radius:14px;
+  --radius-sm:8px;
+  --maxw:1180px;
+  --display: 'Space Grotesk', sans-serif;
+  --body: 'Inter', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --ease: cubic-bezier(.16,.8,.24,1);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important;} }
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--body);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size:64px 64px;
+  opacity:.35;
+  pointer-events:none;
+  z-index:0;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+.wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+section{position:relative; z-index:1;}
+::selection{background:var(--accent); color:#04121a;}
+
+.eyebrow{
+  font-family:var(--mono); font-size:12px; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--accent); display:flex; align-items:center; gap:10px; margin-bottom:16px;
+}
+.eyebrow::before{content:""; width:18px; height:1px; background:var(--accent);}
+h1,h2,h3,h4{font-family:var(--display); font-weight:600; letter-spacing:-.01em; color:var(--text);}
+.section-head{max-width:640px; margin-bottom:48px;}
+.section-head h2{font-size:clamp(28px,4vw,40px); line-height:1.15;}
+.section-head p{color:var(--text-dim); margin-top:14px; font-size:16px;}
+.pill{
+  font-family:var(--mono); font-size:12px; padding:5px 12px; border:1px solid var(--line);
+  border-radius:100px; color:var(--text-dim); background:var(--bg-panel);
+}
+.btn{
+  display:inline-flex; align-items:center; gap:8px; padding:13px 24px; border-radius:9px;
+  font-weight:600; font-size:14.5px; border:1px solid transparent; transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s, border-color .25s;
+  font-family:var(--body);
+}
+.btn-primary{ background:var(--grad); color:#04121a; }
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 10px 30px -8px rgba(53,197,240,.45);}
+.btn-ghost{ border-color:var(--line); color:var(--text); background:rgba(255,255,255,.02); }
+.btn-ghost:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-2px); }
+.btn-sm{padding:9px 16px; font-size:13px;}
+
+/* reveal */
+.reveal{opacity:0; transform:translateY(24px); transition:opacity .8s var(--ease), transform .8s var(--ease);}
+.reveal.in{opacity:1; transform:translateY(0);}
+
+/* ============ NAV ============ */
+header{
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  padding:22px 0; transition:padding .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease);
+  border-bottom:1px solid transparent;
+}
+header.scrolled{ padding:13px 0; background:rgba(6,10,18,.82); backdrop-filter:blur(14px); border-color:var(--line);}
+nav{display:flex; align-items:center; justify-content:space-between;}
+.logo{font-family:var(--mono); font-weight:600; font-size:16px; letter-spacing:.02em;}
+.logo span{color:var(--accent);}
+.nav-links{display:flex; gap:34px; list-style:none;}
+.nav-links a{font-size:14px; color:var(--text-dim); font-weight:500; transition:color .2s; position:relative;}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{display:flex; align-items:center; gap:18px;}
+.nav-toggle{display:none; flex-direction:column; gap:5px; background:none; border:none; padding:6px;}
+.nav-toggle span{width:22px; height:2px; background:var(--text); border-radius:2px;}
+.mobile-menu{
+  position:fixed; inset:0; background:rgba(6,10,18,.98); backdrop-filter:blur(10px); z-index:99;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:28px;
+  opacity:0; pointer-events:none; transition:opacity .3s var(--ease);
+}
+.mobile-menu.open{opacity:1; pointer-events:auto;}
+.mobile-menu a{font-family:var(--display); font-size:26px;}
+
+/* ============ HERO ============ */
+.hero{padding:168px 0 60px; position:relative; overflow:hidden;}
+.hero-grid{display:grid; grid-template-columns:1.15fr .85fr; gap:60px; align-items:center;}
+.hero h1{font-size:clamp(38px,5.6vw,64px); line-height:1.06; letter-spacing:-.02em;}
+.hero h1 .grad{background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.hero p.lead{color:var(--text-dim); font-size:17px; max-width:520px; margin:22px 0 34px;}
+.hero-ctas{display:flex; flex-wrap:wrap; gap:14px; margin-bottom:30px;}
+.hero-contacts{display:flex; gap:20px; flex-wrap:wrap;}
+.hero-contacts a{display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--text-dim); font-family:var(--mono); transition:color .2s;}
+.hero-contacts a:hover{color:var(--accent);}
+.hero-contacts svg{width:16px; height:16px; stroke:currentColor;}
+
+.hero-photo-wrap{position:relative; display:flex; justify-content:center;}
+.hero-photo-orbit{position:relative; width:min(340px,100%); aspect-ratio:1/1.18;}
+.hero-photo-frame{
+  position:absolute; inset:0; border-radius:20px; overflow:hidden; border:1px solid var(--line);
+  box-shadow:0 30px 80px -20px rgba(0,0,0,.6);
+}
+.hero-photo-frame img{width:100%; height:100%; object-fit:cover; object-position:50% 18%;}
+.hero-photo-frame::after{
+  content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 55%, rgba(6,10,18,.75) 100%);
+}
+.orbit-ring{position:absolute; border:1px solid var(--line); border-radius:50%;}
+.orbit-badge{
+  position:absolute; bottom:-16px; left:-26px; background:var(--bg-panel); border:1px solid var(--line);
+  border-radius:12px; padding:12px 16px; display:flex; gap:10px; align-items:center;
+  box-shadow:0 18px 40px -14px rgba(0,0,0,.6);
+}
+.orbit-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-mint); box-shadow:0 0 12px var(--accent-mint);}
+.orbit-badge b{font-family:var(--mono); font-size:12px;}
+.orbit-badge small{color:var(--text-dim); font-size:11px; display:block;}
+
+.signal-strip{margin-top:70px; border-top:1px solid var(--line); padding-top:0;}
+.signal-strip svg{width:100%; height:90px; display:block;}
+.signal-path{fill:none; stroke:url(#lineGrad); stroke-width:1.6; stroke-linecap:round;
+  stroke-dasharray:1400; stroke-dashoffset:1400; animation:draw 2.8s var(--ease) .3s forwards;}
+@keyframes draw{ to{stroke-dashoffset:0;} }
+.signal-dot{opacity:0; animation:fadeDot .6s ease forwards;}
+
+/* ============ STATS ============ */
+.stats{padding:38px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.stats-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:0;}
+.stat{padding:10px 26px; border-left:1px solid var(--line); text-align:left;}
+.stat:first-child{border-left:none; padding-left:0;}
+.stat b{font-family:var(--mono); font-size:clamp(26px,3.4vw,36px); color:var(--text); display:block; font-weight:600;}
+.stat span{color:var(--text-dim); font-size:13px; font-family:var(--mono);}
+
+/* ============ ABOUT ============ */
+.about{padding:120px 0;}
+.about-grid{display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:start;}
+.about p{color:var(--text-dim); font-size:16px; margin-bottom:16px;}
+.about-checklist{list-style:none; display:flex; flex-direction:column; gap:16px;}
+.about-checklist li{display:flex; gap:14px; align-items:flex-start; padding:16px; background:var(--bg-panel); border:1px solid var(--line); border-radius:var(--radius-sm);}
+.about-checklist svg{width:18px; height:18px; stroke:var(--accent); flex-shrink:0; margin-top:2px;}
+.about-checklist b{display:block; font-size:14.5px; margin-bottom:3px;}
+.about-checklist span{color:var(--text-dim); font-size:13.5px;}
+
+/* ============ SKILLS ============ */
+.skills{padding:100px 0; background:linear-gradient(180deg,transparent,var(--bg-panel) 4%,var(--bg-panel) 96%,transparent);}
+.skills-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+.skill-card{
+  background:var(--bg); border:1px solid var(--line); border-radius:var(--radius); padding:26px;
+  transition:transform .3s var(--ease), border-color .3s var(--ease);
+}
+.skill-card:hover{transform:translateY(-5px); border-color:var(--accent);}
+.skill-card .icon{width:38px; height:38px; border-radius:9px; background:var(--bg-panel-2); display:flex; align-items:center; justify-content:center; margin-bottom:18px;}
+.skill-card .icon svg{width:19px; height:19px; stroke:var(--accent);}
+.skill-card h4{font-size:16.5px; margin-bottom:6px;}
+.skill-card p{color:var(--text-dim); font-size:13.5px; margin-bottom:16px;}
+.tag-row{display:flex; flex-wrap:wrap; gap:7px;}
+.tag{font-family:var(--mono); font-size:11.5px; padding:4px 9px; border-radius:6px; background:var(--bg-panel-2); color:var(--text-dim); border:1px solid var(--line);}
+
+/* ============ PROCESS ============ */
+.process{padding:110px 0;}
+.process-track{position:relative;}
+.process-track::before{content:""; position:absolute; left:19px; top:8px; bottom:8px; width:1px; background:var(--line);}
+.process-item{display:grid; grid-template-columns:44px 1fr; gap:22px; padding-bottom:34px; position:relative;}
+.process-item:last-child{padding-bottom:0;}
+.process-num{
+  width:40px; height:40px; border-radius:50%; background:var(--bg-panel); border:1px solid var(--line);
+  display:flex; align-items:center; justify-content:center; font-family:var(--mono); font-size:12.5px; color:var(--accent);
+  z-index:1;
+}
+.process-body{padding-top:6px;}
+.process-body h4{font-size:16px; margin-bottom:5px;}
+.process-body p{color:var(--text-dim); font-size:14px; max-width:560px;}
+
+/* ============ PROJECTS ============ */
+.projects{padding:110px 0; background:linear-gradient(180deg,transparent,var(--bg-panel) 4%,var(--bg-panel) 96%,transparent);}
+.project-grid{display:grid; grid-template-columns:1fr; gap:22px;}
+.project-card{
+  display:grid; grid-template-columns:1.1fr 1fr; gap:0; background:var(--bg); border:1px solid var(--line);
+  border-radius:var(--radius); overflow:hidden; cursor:pointer; transition:border-color .3s var(--ease), transform .3s var(--ease);
+}
+.project-card:hover{border-color:var(--accent); transform:translateY(-3px);}
+.project-card:nth-child(even){grid-template-columns:1fr 1.1fr;}
+.project-card:nth-child(even) .project-media{order:2;}
+.project-media{position:relative; overflow:hidden; min-height:220px; background:var(--bg-panel);}
+.project-media img{width:100%; height:100%; object-fit:cover; object-position:top; transition:transform .5s var(--ease);}
+.project-card:hover .project-media img{transform:scale(1.04);}
+.project-media .tool-badge{
+  position:absolute; top:14px; left:14px; font-family:var(--mono); font-size:11px; padding:5px 10px;
+  background:rgba(6,10,18,.75); backdrop-filter:blur(6px); border:1px solid var(--line); border-radius:6px; color:var(--accent);
+}
+.project-info{padding:34px; display:flex; flex-direction:column; justify-content:center;}
+.project-info .idx{font-family:var(--mono); color:var(--text-faint); font-size:12px; margin-bottom:10px;}
+.project-info h3{font-size:22px; margin-bottom:10px;}
+.project-info p{color:var(--text-dim); font-size:14.5px; margin-bottom:18px;}
+.project-info .btn-sm{align-self:flex-start;}
+
+/* modal */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(4,8,14,.82); backdrop-filter:blur(6px); z-index:200;
+  display:flex; align-items:center; justify-content:center; padding:24px; opacity:0; pointer-events:none; transition:opacity .3s var(--ease);
+}
+.modal-overlay.open{opacity:1; pointer-events:auto;}
+.modal{
+  background:var(--bg-panel); border:1px solid var(--line); border-radius:16px; max-width:920px; width:100%;
+  max-height:88vh; overflow-y:auto; transform:translateY(20px); transition:transform .35s var(--ease);
+}
+.modal-overlay.open .modal{transform:translateY(0);}
+.modal-gallery{position:relative;}
+.modal-gallery img{width:100%; max-height:440px; object-fit:contain; background:#000;}
+.modal-thumbs{display:flex; gap:8px; padding:12px; background:#020509; overflow-x:auto;}
+.modal-thumbs img{width:70px; height:44px; object-fit:cover; border-radius:5px; opacity:.5; cursor:pointer; border:1px solid transparent; transition:opacity .2s, border-color .2s; flex-shrink:0;}
+.modal-thumbs img.active{opacity:1; border-color:var(--accent);}
+.modal-close{
+  position:sticky; top:14px; float:right; margin:14px 14px 0 0; width:34px; height:34px; border-radius:50%;
+  background:rgba(6,10,18,.7); border:1px solid var(--line); color:var(--text); display:flex; align-items:center; justify-content:center;
+  z-index:5; font-size:16px;
+}
+.modal-body{padding:32px 36px 40px;}
+.modal-body h3{font-size:24px; margin-bottom:6px;}
+.modal-body .idx-line{font-family:var(--mono); color:var(--accent); font-size:12px; margin-bottom:18px; display:block;}
+.modal-section{margin-bottom:22px;}
+.modal-section h5{font-family:var(--mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.12em; color:var(--text-faint); margin-bottom:8px;}
+.modal-section p, .modal-section li{color:var(--text-dim); font-size:14.5px; line-height:1.7;}
+.modal-section ul{padding-left:18px;}
+.modal-tools{display:flex; flex-wrap:wrap; gap:8px;}
+
+/* ============ AI SECTION ============ */
+.ai-sec{padding:110px 0;}
+.ai-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:60px; align-items:center;}
+.ai-visual{
+  border:1px solid var(--line); border-radius:16px; padding:30px; background:var(--bg-panel); position:relative; overflow:hidden;
+}
+.ai-visual .node-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;}
+.ai-visual .node{
+  flex:1; text-align:center; padding:16px 8px; border:1px solid var(--line); border-radius:10px; background:var(--bg);
+  font-family:var(--mono); font-size:12px; color:var(--text-dim); position:relative;
+}
+.ai-visual .node b{display:block; color:var(--text); font-size:13px; margin-bottom:4px; font-family:var(--body); font-weight:600;}
+.ai-visual .arrow{width:22px; color:var(--accent); flex-shrink:0; text-align:center; font-size:14px;}
+.ai-list{list-style:none; display:flex; flex-direction:column; gap:14px; margin-top:20px;}
+.ai-list li{display:flex; gap:12px; font-size:14.5px; color:var(--text-dim);}
+.ai-list li b{color:var(--text); font-weight:600;}
+.ai-list li::before{content:"→"; color:var(--accent); flex-shrink:0;}
+.note-box{margin-top:22px; padding:14px 16px; border:1px dashed var(--line); border-radius:10px; font-size:13px; color:var(--text-faint);}
+
+/* ============ BUSINESS ============ */
+.biz{padding:110px 0; background:linear-gradient(180deg,transparent,var(--bg-panel) 4%,var(--bg-panel) 96%,transparent);}
+.biz-grid{display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;}
+.flow{display:flex; flex-direction:column; gap:0;}
+.flow-step{display:flex; align-items:center; gap:16px; padding:18px 0; border-bottom:1px solid var(--line);}
+.flow-step:last-child{border-bottom:none;}
+.flow-step .fnum{font-family:var(--mono); color:var(--accent); font-size:13px; width:26px;}
+.flow-step b{font-size:15px; display:block;}
+.flow-step span{color:var(--text-dim); font-size:13px;}
+.biz-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px;}
+
+/* ============ RESUME ============ */
+.resume{padding:110px 0;}
+.resume-card{
+  display:grid; grid-template-columns:.85fr 1.15fr; gap:0; border:1px solid var(--line); border-radius:16px;
+  overflow:hidden; background:var(--bg-panel);
+}
+.resume-preview{background:#0a0f18; padding:28px; display:flex; align-items:center; justify-content:center; min-height:280px;}
+.resume-preview iframe{width:100%; height:340px; border:1px solid var(--line); border-radius:8px; background:#fff;}
+.resume-info{padding:38px;}
+.resume-info h3{font-size:22px; margin-bottom:12px;}
+.resume-info p{color:var(--text-dim); font-size:14.5px; margin-bottom:22px;}
+.resume-meta{display:flex; flex-direction:column; gap:10px; margin-bottom:26px;}
+.resume-meta div{display:flex; justify-content:space-between; font-size:13.5px; padding:10px 0; border-bottom:1px solid var(--line); font-family:var(--mono);}
+.resume-meta span{color:var(--text-dim);}
+.resume-btns{display:flex; gap:12px; flex-wrap:wrap;}
+
+/* ============ CONNECT + CONTACT ============ */
+.connect{padding:110px 0; background:linear-gradient(180deg,transparent,var(--bg-panel) 4%,var(--bg-panel) 96%,transparent);}
+.connect-grid{display:grid; grid-template-columns:.9fr 1.1fr; gap:24px;}
+.li-card{
+  border:1px solid var(--line); border-radius:16px; padding:34px; background:var(--bg); display:flex; flex-direction:column;
+  justify-content:space-between; gap:20px;
+}
+.li-top{display:flex; gap:14px; align-items:flex-start;}
+.li-icon{width:44px; height:44px; border-radius:11px; background:var(--grad); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+.li-icon svg{width:22px; height:22px; fill:#04121a;}
+.li-top h4{font-size:17px; margin-bottom:5px;}
+.li-top p{color:var(--text-dim); font-size:13.5px;}
+
+.contact-card{border:1px solid var(--line); border-radius:16px; padding:34px; background:var(--bg);}
+.contact-card h4{font-size:19px; margin-bottom:20px;}
+.form-row{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field label{font-family:var(--mono); font-size:11px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.08em;}
+.field input, .field select, .field textarea{
+  background:var(--bg-panel-2); border:1px solid var(--line); border-radius:8px; padding:11px 13px; color:var(--text);
+  font-family:var(--body); font-size:14px; transition:border-color .2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus{outline:none; border-color:var(--accent);}
+.field textarea{resize:vertical; min-height:90px;}
+.form-note{font-size:12px; color:var(--text-faint); margin-top:12px;}
+
+.info-row{display:flex; gap:22px; flex-wrap:wrap; margin-top:16px;}
+.info-row a{display:flex; align-items:center; gap:8px; font-size:13.5px; color:var(--text-dim); font-family:var(--mono); transition:color .2s;}
+.info-row a:hover{color:var(--accent);}
+.info-row svg{width:15px; height:15px; stroke:currentColor;}
+
+/* ============ FOOTER ============ */
+footer{padding:50px 0 34px; border-top:1px solid var(--line);}
+.footer-grid{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:24px;}
+.footer-left b{font-family:var(--mono); font-size:15px;}
+.footer-left span{display:block; color:var(--text-dim); font-size:13px; margin-top:4px;}
+.footer-links{display:flex; gap:22px; flex-wrap:wrap; list-style:none;}
+.footer-links a{color:var(--text-dim); font-size:13.5px; transition:color .2s;}
+.footer-links a:hover{color:var(--accent);}
+.footer-bottom{margin-top:30px; padding-top:20px; border-top:1px solid var(--line); color:var(--text-faint); font-size:12px; font-family:var(--mono);}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr; gap:44px;}
+  .hero{padding-top:130px;}
+  .hero-photo-wrap{order:-1;}
+  .hero-photo-orbit{width:220px; margin:0 auto;}
+  .about-grid, .ai-grid, .biz-grid, .connect-grid{grid-template-columns:1fr;}
+  .skills-grid{grid-template-columns:repeat(2,1fr);}
+  .project-card, .project-card:nth-child(even){grid-template-columns:1fr;}
+  .project-card:nth-child(even) .project-media{order:0;}
+  .resume-card{grid-template-columns:1fr;}
+  .stats-grid{grid-template-columns:repeat(2,1fr); row-gap:26px;}
+  .stat:nth-child(3){border-left:none;}
+  .nav-links, .nav-cta .btn-ghost, .nav-cta a[href^="tel"]{display:none;}
+  .nav-toggle{display:flex;}
+}
+@media (max-width:640px){
+  .wrap{padding:0 20px;}
+  .skills-grid{grid-template-columns:1fr;}
+  .form-row{grid-template-columns:1fr;}
+  .footer-grid{flex-direction:column; align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<header id="siteHeader">
+  <div class="wrap">
+    <nav>
+      <a href="#top" class="logo">M<span>/</span>ATITO<span>.</span>data</a>
+      <ul class="nav-links">
+        <li><a href="#top">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#ai">AI</a></li>
+        <li><a href="#resume">Resume</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="tel:+201104184339" class="btn btn-ghost btn-sm">+20 110 418 4339</a>
+        <a href="#contact" class="btn btn-primary btn-sm">Let's Talk</a>
+        <button class="nav-toggle" id="navToggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#top">Home</a>
+  <a href="#about">About</a>
+  <a href="#skills">Skills</a>
+  <a href="#projects">Projects</a>
+  <a href="#ai">AI</a>
+  <a href="#resume">Resume</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="reveal in">
+        <div class="eyebrow">Data Analyst · Business Intelligence · Accounting</div>
+        <h1>Turning raw data into <span class="grad">decisions</span> you can act on.</h1>
+        <p class="lead">I'm Mohamed Atito — a Data Analyst and third-year Accounting student in Qena, Egypt. I clean and query data with SQL, build dashboards in Power BI, Tableau and Excel, and translate the numbers into insight that stakeholders can actually use.</p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn btn-primary">View My Projects</a>
+          <a href="#contact" class="btn btn-ghost">Let's Work Together</a>
+        </div>
+        <div class="hero-contacts">
+          <a href="#" id="linkedinHeroLink" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn Profile
+          </a>
+          <a href="tel:+201104184339">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+            +20 110 418 4339
+          </a>
+          <a href="mailto:mohamed71tito@gmail.com">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>
+            mohamed71tito@gmail.com
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-photo-wrap reveal in">
+        <div class="hero-photo-orbit">
+          <div class="orbit-ring" style="inset:-18px;"></div>
+          <div class="hero-photo-frame"><img src="assets/profile.jpg" alt="Portrait of Mohamed Atito, Data Analyst"></div>
+          <div class="orbit-badge"><span class="dot"></span><div><b>Available for work</b><small>Freelance &amp; Internship</small></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="signal-strip reveal in">
+      <svg viewBox="0 0 1200 90" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#35c5f0" stop-opacity="0"/>
+            <stop offset="15%" stop-color="#35c5f0"/>
+            <stop offset="85%" stop-color="#5b7fff"/>
+            <stop offset="100%" stop-color="#5b7fff" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path class="signal-path" d="M0,60 L60,60 L100,30 L140,68 L180,20 L220,55 L260,55 L300,12 L340,50 L380,50 L420,45 L460,60 L500,25 L540,58 L580,58 L620,15 L660,40 L700,40 L740,55 L780,18 L820,48 L860,48 L900,30 L940,62 L980,10 L1020,44 L1060,44 L1100,38 L1140,38 L1200,20"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<section class="stats">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat reveal"><b data-count="2" data-suffix="+">0</b><span>Years Experience</span></div>
+      <div class="stat reveal"><b data-count="5">0</b><span>Data &amp; BI Projects</span></div>
+      <div class="stat reveal"><b data-count="8" data-suffix="+">0</b><span>Tools &amp; Platforms</span></div>
+      <div class="stat reveal"><b data-count="4">0</b><span>Certifications</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section class="about" id="about">
+  <div class="wrap">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="eyebrow">About Me</div>
+        <h2 style="font-size:clamp(26px,3.4vw,34px); margin-bottom:20px;">A data analyst who thinks like a business student first.</h2>
+        <p>I'm currently a third-year Accounting student at the Faculty of Commerce, and since mid-2024 I've been working as a freelance Data Analyst — extracting and cleaning datasets with SQL, and building dashboards in Power BI and Tableau that hold up under real scrutiny.</p>
+        <p>What I bring isn't just tool proficiency. Studying accounting alongside analytics means I read a dataset the way a business reads its numbers — in terms of revenue, cost, performance and risk — not just rows and columns. That combination is what turns a chart into a recommendation.</p>
+        <p>I hold the Google Data Analytics Professional Certificate and recently completed banking services training with Rowad Nile at Banque Misr, sharpening how I think about financial data and transactional reporting.</p>
+      </div>
+      <ul class="about-checklist reveal">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><div><b>SQL-first workflow</b><span>Extracting and cleaning raw datasets to keep every dashboard accurate and consistent.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><div><b>Dashboards that get used</b><span>Power BI, Tableau and Excel dashboards built for the questions stakeholders actually ask.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><div><b>Business &amp; accounting lens</b><span>Financial accounting, bookkeeping and reporting background shapes how I frame insight.</span></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><div><b>Detail-oriented by habit</b><span>Auditing every dashboard before it ships, to reduce visualization errors and inconsistencies.</span></div></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SKILLS ============ -->
+<section class="skills" id="skills">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Skills &amp; Stack</div>
+      <h2>Grounded in tools I use every day.</h2>
+      <p>Every item below comes directly from hands-on freelance work — nothing here is a "familiar with," it's a "used it to ship something."</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14a9 3 0 0018 0V5"/><path d="M3 12a9 3 0 0018 0"/></svg></div>
+        <h4>Data &amp; Databases</h4>
+        <p>Writing SQL queries to extract and clean data, and keep every database structurally sound.</p>
+        <div class="tag-row"><span class="tag">SQL Queries</span><span class="tag">Data Cleaning</span><span class="tag">Data Auditing</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
+        <h4>Business Intelligence</h4>
+        <p>Designing and deploying automated dashboards that turn tables into decision-ready visuals.</p>
+        <div class="tag-row"><span class="tag">Power BI</span><span class="tag">Tableau</span><span class="tag">Dashboard Design</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 5-8"/></svg></div>
+        <h4>Analysis &amp; Visualization</h4>
+        <p>Statistical analysis and data handling in Python, plus advanced Excel for fast, reliable modelling.</p>
+        <div class="tag-row"><span class="tag">Python</span><span class="tag">Excel (VLOOKUP)</span><span class="tag">Pivot Tables</span><span class="tag">Google Sheets</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 2l9 4.5v9L12 22l-9-6.5v-9z"/><path d="M12 22V12M21 6.5L12 12 3 6.5"/></svg></div>
+        <h4>Business &amp; Finance</h4>
+        <p>An accounting background that connects every dashboard back to revenue, cost and performance.</p>
+        <div class="tag-row"><span class="tag">Financial Accounting</span><span class="tag">Bookkeeping</span><span class="tag">Financial Reporting</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20"/></svg></div>
+        <h4>Business Systems</h4>
+        <p>Working knowledge of enterprise systems used to manage and report on business operations.</p>
+        <div class="tag-row"><span class="tag">SAP</span><span class="tag">Odoo ERP</span></div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h4>Core Strengths</h4>
+        <p>The habits that make the technical work reliable — and easy to collaborate around.</p>
+        <div class="tag-row"><span class="tag">Detail-Oriented</span><span class="tag">Analytical Thinking</span><span class="tag">Communication</span><span class="tag">Teamwork</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="process">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">My Process</div>
+      <h2>How a dataset becomes a decision.</h2>
+      <p>The same sequence, every project — it's what keeps dashboards accurate and insights defensible.</p>
+    </div>
+    <div class="process-track">
+      <div class="process-item reveal"><div class="process-num">01</div><div class="process-body"><h4>Understand the business problem</h4><p>Before opening any tool, get clear on the decision the data needs to support.</p></div></div>
+      <div class="process-item reveal"><div class="process-num">02</div><div class="process-body"><h4>Collect the data</h4><p>Pull from source systems and databases with SQL, keeping structure and integrity intact.</p></div></div>
+      <div class="process-item reveal"><div class="process-num">03</div><div class="process-body"><h4>Clean &amp; prepare</h4><p>Handle nulls, duplicates and inconsistencies — the unglamorous step that decides everything after it.</p></div></div>
+      <div class="process-item reveal"><div class="process-num">04</div><div class="process-body"><h4>Explore &amp; analyze</h4><p>Statistical analysis in Python and Excel to find the patterns worth reporting on.</p></div></div>
+      <div class="process-item reveal"><div class="process-num">05</div><div class="process-body"><h4>Build the dashboard</h4><p>Design in Power BI, Tableau or Excel around the questions stakeholders will actually ask.</p></div></div>
+      <div class="process-item reveal"><div class="process-num">06</div><div class="process-body"><h4>Generate insights</h4><p>Translate the visuals into a narrative that's clear without the underlying data in front of you.</p></div></div>
+      <div class="process-item reveal"><div class="process-num">07</div><div class="process-body"><h4>Recommend actions</h4><p>Pair every insight with a next step, grounded in business and financial context.</p></div></div>
+      <div class="process-item reveal"><div class="process-num">08</div><div class="process-body"><h4>Audit &amp; refine</h4><p>Re-check the dashboard for errors and consistency before it reaches a stakeholder.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROJECTS ============ -->
+<section class="projects" id="projects">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Featured Projects</div>
+      <h2>Dashboards built on real datasets.</h2>
+      <p>Click any project to see the full breakdown — business problem, tools used, and what the dashboard surfaces.</p>
+    </div>
+    <div class="project-grid" id="projectGrid"></div>
+  </div>
+</section>
+
+<!-- ============ AI ============ -->
+<section class="ai-sec" id="ai">
+  <div class="wrap">
+    <div class="ai-grid">
+      <div class="reveal">
+        <div class="eyebrow">Data Analytics Meets AI</div>
+        <h2 style="font-size:clamp(26px,3.4vw,34px); margin-bottom:16px;">AI as a faster route to the same rigorous analysis.</h2>
+        <p style="color:var(--text-dim); font-size:15.5px; margin-bottom:10px;">I use AI tools throughout my workflow — to speed up exploratory analysis, draft cleaner SQL and Python, and turn dashboard findings into narratives non-technical stakeholders can follow quickly. AI accelerates the process; the accuracy still comes from the same detail-oriented checks I apply to every dataset.</p>
+        <ul class="ai-list">
+          <li><span><b>Faster exploration:</b> using AI assistants to test hypotheses and query logic before committing to a dashboard structure.</span></li>
+          <li><span><b>Clearer reporting:</b> turning raw KPIs into narratives a business owner can act on without reading the chart themselves.</span></li>
+          <li><span><b>Workflow automation:</b> reducing repetitive cleaning and formatting steps so more time goes to analysis.</span></li>
+        </ul>
+        <div class="note-box">This is a growing part of my workflow rather than a separate specialism — the core analysis is still SQL, Power BI, Tableau, Python and Excel.</div>
+      </div>
+      <div class="ai-visual reveal">
+        <div class="node-row">
+          <div class="node"><b>Raw Data</b>SQL / Excel</div>
+          <div class="arrow">→</div>
+          <div class="node"><b>AI-Assisted Pass</b>Faster QA &amp; drafts</div>
+          <div class="arrow">→</div>
+          <div class="node"><b>Reviewed Insight</b>Human-checked</div>
+        </div>
+        <div class="node-row" style="margin-bottom:0;">
+          <div class="node"><b>Dashboard</b>Power BI / Tableau</div>
+          <div class="arrow">→</div>
+          <div class="node"><b>Narrative</b>Plain-language</div>
+          <div class="arrow">→</div>
+          <div class="node"><b>Decision</b>Stakeholder-ready</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUSINESS ============ -->
+<section class="biz">
+  <div class="wrap">
+    <div class="biz-grid">
+      <div class="reveal">
+        <div class="eyebrow">Beyond Data</div>
+        <h2 style="font-size:clamp(26px,3.4vw,34px); margin-bottom:16px;">Understanding the business behind the numbers.</h2>
+        <p style="color:var(--text-dim); font-size:15.5px;">A dashboard is only as useful as the business context behind it. My accounting background — financial reporting, bookkeeping, and hands-on banking training — means I don't just visualize numbers, I understand what they mean for revenue, cost and performance.</p>
+        <div class="biz-tags">
+          <span class="pill">Financial Reporting</span>
+          <span class="pill">Revenue &amp; Cost Analysis</span>
+          <span class="pill">Business Performance</span>
+          <span class="pill">Customer Behavior</span>
+        </div>
+      </div>
+      <div class="flow reveal">
+        <div class="flow-step"><span class="fnum">01</span><div><b>Data</b><span>Raw records from SQL, spreadsheets or business systems.</span></div></div>
+        <div class="flow-step"><span class="fnum">02</span><div><b>Insights</b><span>Patterns and KPIs surfaced through analysis and dashboards.</span></div></div>
+        <div class="flow-step"><span class="fnum">03</span><div><b>Business Decisions</b><span>Findings framed around revenue, cost and operational impact.</span></div></div>
+        <div class="flow-step"><span class="fnum">04</span><div><b>Growth</b><span>Decisions that move a real business metric forward.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESUME ============ -->
+<section class="resume" id="resume">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">My Resume</div>
+      <h2>The full picture, in one document.</h2>
+    </div>
+    <div class="resume-card reveal">
+      <div class="resume-preview">
+        <iframe src="assets/Mohamed_Atito_CV.pdf" title="Mohamed Atito CV preview"></iframe>
+      </div>
+      <div class="resume-info">
+        <h3>Mohamed Atito Hussein Hassan</h3>
+        <p>Data Analyst &amp; Business Intelligence · Third-Year Accounting Student · Qena, Egypt</p>
+        <div class="resume-meta">
+          <div><span>Experience</span> 2+ years, Data Analyst (Freelance)</div>
+          <div><span>Education</span> B.Com Accounting — Expected 2028</div>
+          <div><span>Certification</span> Google Data Analytics Professional</div>
+          <div><span>Languages</span> Arabic (Native), English (Intermediate)</div>
+        </div>
+        <div class="resume-btns">
+          <a href="assets/Mohamed_Atito_CV.pdf" target="_blank" class="btn btn-primary">View CV</a>
+          <a href="assets/Mohamed_Atito_CV.pdf" download class="btn btn-ghost">Download CV</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONNECT + CONTACT ============ -->
+<section class="connect" id="contact">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Have Data? Let's Turn It Into Insight.</div>
+      <h2>Let's connect.</h2>
+      <p>Open to freelance data analysis work and Data Analyst internships. Reach out directly or send a message below.</p>
+    </div>
+    <div class="connect-grid">
+      <div class="li-card reveal">
+        <div class="li-top">
+          <div class="li-icon"><svg viewBox="0 0 24 24"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.07 2.07 0 11.01-4.13 2.07 2.07 0 01-.01 4.13zM7.11 20.45H3.56V9h3.55v11.45z"/></svg></div>
+          <div>
+            <h4>Connect on LinkedIn</h4>
+            <p>Full work history, recommendations and updates — the fastest way to see the complete profile.</p>
+          </div>
+        </div>
+        <a href="#" id="linkedinCardLink" target="_blank" rel="noopener" class="btn btn-primary" style="align-self:flex-start;">Open LinkedIn Profile</a>
+        <div class="info-row">
+          <a href="mailto:mohamed71tito@gmail.com"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg>mohamed71tito@gmail.com</a>
+          <a href="tel:+201104184339"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>+20 110 418 4339</a>
+        </div>
+      </div>
+
+      <div class="contact-card reveal">
+        <h4>Start a conversation</h4>
+        <form id="contactForm">
+          <div class="form-row">
+            <div class="field"><label for="cf-name">Name</label><input type="text" id="cf-name" required></div>
+            <div class="field"><label for="cf-email">Email</label><input type="email" id="cf-email" required></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="cf-company">Company</label><input type="text" id="cf-company"></div>
+            <div class="field">
+              <label for="cf-type">Project Type</label>
+              <select id="cf-type">
+                <option>Data Analysis</option>
+                <option>Power BI / Tableau Dashboard</option>
+                <option>Excel &amp; Data Cleaning</option>
+                <option>Internship Opportunity</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom:18px;"><label for="cf-message">Message</label><textarea id="cf-message" required></textarea></div>
+          <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Start a Conversation</button>
+          <p class="form-note">This opens your email client with the message pre-filled, addressed to mohamed71tito@gmail.com.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-left">
+        <b>Mohamed Atito</b>
+        <span>Data Analyst · Business Intelligence · Accounting</span>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#" id="linkedinFooterLink" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="tel:+201104184339">Phone</a></li>
+        <li><a href="assets/Mohamed_Atito_CV.pdf" target="_blank">CV</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">© 2026 Mohamed Atito. Built with data, curiosity, and a little too much coffee.</div>
+  </div>
+</footer>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div class="modal-gallery">
+      <img id="modalMainImg" src="" alt="">
+    </div>
+    <div class="modal-thumbs" id="modalThumbs"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ================= DATA ================= */
+// !! Replace with your real LinkedIn profile URL !!
+const LINKEDIN_URL = "https://www.linkedin.com/in/mohamed-atito";
+
+document.querySelectorAll('#linkedinHeroLink, #linkedinCardLink, #linkedinFooterLink').forEach(el=>{
+  el.href = LINKEDIN_URL;
+});
+
+const projects = [
+  {
+    idx:"01",
+    tool:"Power BI",
+    name:"Telecom Customer Churn Analysis",
+    short:"A churn dashboard identifying which customer segments are most likely to leave, and why.",
+    images:["assets/project-churn.jpg"],
+    overview:"An interactive Power BI report analyzing telecom subscriber data to understand churn drivers across states, account length, plan type and support-call volume.",
+    problem:"The business needed to know which customers were at the highest risk of churning and what behavioral signals — like customer service calls or plan type — correlated with that risk, so retention efforts could be targeted rather than blanket.",
+    tools:["Power BI","Data Cleaning","DAX Measures"],
+    insights:"Churn concentrates heavily among customers with 4+ customer service calls, and international-plan subscribers churn at a disproportionately high rate relative to their share of the base. Roughly 14.5% of the analyzed base had churned.",
+    recommendation:"Flag accounts with repeated service calls for proactive retention outreach, and review pricing or support quality for the international plan segment specifically."
+  },
+  {
+    idx:"02",
+    tool:"Power BI",
+    name:"Stock Trading Dashboard",
+    short:"A market-performance dashboard tracking price and volume trends across years and months.",
+    images:["assets/project-stock.jpg"],
+    overview:"A Power BI dashboard built on historical trading data (2014–2017), tracking close price, trading volume, and high/low ranges with year, quarter, month and symbol-level filters.",
+    problem:"Raw daily trading records are hard to reason about at a glance. The dashboard needed to surface the trend in closing price and volume over time in a way a non-technical stakeholder could scan in seconds.",
+    tools:["Power BI","Data Visualization","Time-Series Analysis"],
+    insights:"Average closing price rose steadily from the high-70s to the high-90s across the tracked period, while average trading volume stayed comparatively flat — suggesting price growth wasn't purely volume-driven.",
+    recommendation:"Layer in volatility or sector-comparison metrics next, to explain the price trend rather than just report it."
+  },
+  {
+    idx:"03",
+    tool:"Excel",
+    name:"Student Performance & School Analytics",
+    short:"A pivot-table-driven Excel dashboard analyzing exam scores across schools, subjects and teachers.",
+    images:["assets/project-student.jpg"],
+    overview:"An Excel dashboard (built on PivotTables and slicers) analyzing 1,000 student records across five schools, tracking average score, pass rate, subject performance and grade distribution.",
+    problem:"School administrators needed one view to compare performance across schools, teachers and subjects — without digging through raw gradebooks — to see where scores were falling short of expectations.",
+    tools:["Excel","Pivot Tables","VLOOKUP","Data Cleaning"],
+    insights:"Average score sat at 49.62 with a 50% pass rate. Science consistently outperformed other subjects on final exams, while schools showed a meaningful spread — from roughly 45 to 53 average score.",
+    recommendation:"Prioritize intervention at the lowest-performing school and subject pairing first, since that's where the pass-rate gap is largest."
+  },
+  {
+    idx:"04",
+    tool:"Power BI",
+    name:"Social Sentiment & Engagement Radar",
+    short:"A social-media analytics dashboard tracking sentiment, engagement and audience geography.",
+    images:["assets/project-social.jpg"],
+    overview:"A Power BI report analyzing social post data across Instagram, Twitter and Facebook — sentiment distribution, engagement volume, platform share and audience geography.",
+    problem:"Marketing teams needed a single view of which platforms and sentiment types were actually driving engagement, rather than judging performance post-by-post.",
+    tools:["Power BI","Sentiment Data","Geo-Mapping"],
+    insights:"Positive and joy-related sentiment led all categories, and Instagram held the largest share of likes (35.4%) despite a fairly even three-way split with Twitter and Facebook. Historical retweet averages trended gradually downward from 2010 to 2024.",
+    recommendation:"Double down on the content style behind the 'positive' and 'joy' sentiment clusters, and prioritize Instagram for engagement-focused campaigns."
+  },
+  {
+    idx:"05",
+    tool:"Power BI",
+    name:"Habits & Health Outcomes: A Socioeconomic Analysis",
+    short:"A three-page Power BI report connecting addiction-related habits to income, mental health and geography.",
+    images:["assets/project-addiction-1.jpg","assets/project-addiction-2.jpg","assets/project-addiction-3.jpg"],
+    overview:"A multi-page Power BI report examining the relationship between smoking and drinking habits, income, mental health status, employment and geography across a global population sample.",
+    problem:"The goal was to move beyond a single headline number and let analysts filter by age group, gender, country and mental health status to see how habits and quit-attempts vary across socioeconomic lines.",
+    tools:["Power BI","Cross-Filtering","Geo-Mapping","DAX Measures"],
+    insights:"Age at which people start drinking or smoking trends notably younger in older age brackets, and quit-attempts for smoking are highest in the 41-60 and Above-60 groups. Reported income and social-support level both show a visible relationship with quit-attempt patterns.",
+    recommendation:"Target cessation support programs at the 41-60 age bracket first, where quit-attempts are already highest and most likely to succeed with added support."
+  }
+];
+
+const grid = document.getElementById('projectGrid');
+projects.forEach((p,i)=>{
+  const card = document.createElement('div');
+  card.className = 'project-card reveal';
+  card.innerHTML = `
+    <div class="project-media">
+      <span class="tool-badge">${p.tool}</span>
+      <img src="${p.images[0]}" alt="${p.name} dashboard screenshot" loading="lazy">
+    </div>
+    <div class="project-info">
+      <div class="idx">Project ${p.idx}</div>
+      <h3>${p.name}</h3>
+      <p>${p.short}</p>
+      <button class="btn btn-primary btn-sm" data-open="${i}">View Project</button>
+    </div>`;
+  grid.appendChild(card);
+});
+
+/* ================= MODAL ================= */
+const overlay = document.getElementById('modalOverlay');
+const modalMainImg = document.getElementById('modalMainImg');
+const modalThumbs = document.getElementById('modalThumbs');
+const modalBody = document.getElementById('modalBody');
+
+function openModal(i){
+  const p = projects[i];
+  modalMainImg.src = p.images[0];
+  modalMainImg.alt = p.name;
+  modalThumbs.innerHTML = '';
+  if(p.images.length > 1){
+    p.images.forEach((src,idx)=>{
+      const t = document.createElement('img');
+      t.src = src; t.className = idx===0 ? 'active':'';
+      t.addEventListener('click', ()=>{
+        modalMainImg.src = src;
+        modalThumbs.querySelectorAll('img').forEach(im=>im.classList.remove('active'));
+        t.classList.add('active');
+      });
+      modalThumbs.appendChild(t);
+    });
+    modalThumbs.style.display = 'flex';
+  } else {
+    modalThumbs.style.display = 'none';
+  }
+  modalBody.innerHTML = `
+    <span class="idx-line">Project ${p.idx} — ${p.tool}</span>
+    <h3>${p.name}</h3>
+    <div class="modal-section"><h5>Overview</h5><p>${p.overview}</p></div>
+    <div class="modal-section"><h5>Business Problem</h5><p>${p.problem}</p></div>
+    <div class="modal-section"><h5>Tools &amp; Technologies</h5><div class="modal-tools">${p.tools.map(t=>`<span class="tag">${t}</span>`).join('')}</div></div>
+    <div class="modal-section"><h5>Key Insights</h5><p>${p.insights}</p></div>
+    <div class="modal-section"><h5>Recommendation</h5><p>${p.recommendation}</p></div>
+  `;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+grid.addEventListener('click', e=>{
+  const btn = e.target.closest('[data-open]');
+  if(btn) openModal(parseInt(btn.dataset.open));
+});
+document.getElementById('modalClose').addEventListener('click', closeModal);
+overlay.addEventListener('click', e=>{ if(e.target === overlay) closeModal(); });
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeModal(); });
+function closeModal(){ overlay.classList.remove('open'); document.body.style.overflow=''; }
+
+/* ================= NAV ================= */
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', ()=>{
+  header.classList.toggle('scrolled', window.scrollY > 30);
+});
+const navToggle = document.getElementById('navToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+navToggle.addEventListener('click', ()=> mobileMenu.classList.toggle('open'));
+mobileMenu.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=> mobileMenu.classList.remove('open')));
+
+/* ================= REVEAL ON SCROLL ================= */
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+/* ================= COUNTERS ================= */
+const counters = document.querySelectorAll('[data-count]');
+const cio = new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const el = en.target;
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      let cur = 0;
+      const step = Math.max(1, Math.round(target/40));
+      const t = setInterval(()=>{
+        cur += step;
+        if(cur >= target){ cur = target; clearInterval(t); }
+        el.textContent = cur + suffix;
+      }, 30);
+      cio.unobserve(el);
+    }
+  });
+},{threshold:.5});
+counters.forEach(c=> cio.observe(c));
+
+/* ================= CONTACT FORM ================= */
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('cf-name').value;
+  const email = document.getElementById('cf-email').value;
+  const company = document.getElementById('cf-company').value;
+  const type = document.getElementById('cf-type').value;
+  const message = document.getElementById('cf-message').value;
+  const subject = encodeURIComponent(`Project inquiry: ${type} — from ${name}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCompany: ${company}\nProject Type: ${type}\n\nMessage:\n${message}`);
+  window.location.href = `mailto:mohamed71tito@gmail.com?subject=${subject}&body=${body}`;
+});
+</script>
+</body>
+</html>
